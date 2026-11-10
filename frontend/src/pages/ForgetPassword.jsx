@@ -6,7 +6,7 @@ import axios from "axios";
 import { showCustomAlert } from "../component/CustomAlert";
 import ClipLoader from "react-spinners/ClipLoader";
 
-const serverUrl = "http://localhost:8000";
+const serverUrl = "https://youtube-clone-nhr4.onrender.com";
 
 function ForgetPassword() {
     const [step, setStep] = useState(1);

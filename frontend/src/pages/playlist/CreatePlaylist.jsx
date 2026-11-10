@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/content";
+const API_URL = "https://youtube-clone-nhr4.onrender.com";
 
 function CreatePlaylist() {
   const [playlists, setPlaylists] = useState([]);

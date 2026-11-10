@@ -26,7 +26,7 @@ import Subscriptions from "./pages/Subscriptions.jsx";
 import GetAllShorts from "./customHooks/GetAllShorts.jsx";
 
 import ManageVideos from "./pages/videos/MangeVideos.jsx"
-export const serverUrl = "http://localhost:8000"
+export const serverUrl = "https://youtube-clone-nhr4.onrender.com"
 
 const ProtectRoute = ({ userData, children }) => {
     if (!userData) {

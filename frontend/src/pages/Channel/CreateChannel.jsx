@@ -6,7 +6,7 @@ import {Await, useNavigate} from 'react-router-dom'
 import axios from "axios";
 import { showCustomAlert } from "../../component/CustomAlert";
 import { ClipLoader } from "react-spinners";
-const serverUrl = "http://localhost:8000";  
+const serverUrl = "https://youtube-clone-nhr4.onrender.com";  
  
 
 
