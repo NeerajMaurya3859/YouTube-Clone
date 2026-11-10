@@ -9,7 +9,6 @@ import { ClipLoader } from "react-spinners"
 import { useNavigate } from "react-router-dom"
 function CreateVideos(){
     const [videoUrl,setVideoUrl]=useState(null)
-    // const [thumbnail,setThumbnail]=useState(null)
     const [title,setTitle]=useState("")
     const [description,setDescription]=useState("")
     const [tags,setTags]=useState("")
@@ -20,28 +19,22 @@ function CreateVideos(){
     const handleVideo=(e)=>{
         setVideoUrl(e.target.files[0])
     }
-    // const handleThumbnail=(e)=>{
-        // setThumbnail(e.target.files[0])
-    // }
-
 
     const handleUploadVideo =async()=>{
            if(!channelData?._id){
             showCustomAlert("channel not found.Please create your channel first");
             return ;
            }
-        //    if(!videoUrl || !thumbnail){
-            // showCustomAlert("please select both a video and a thumbnail");
            if(!videoUrl){
             showCustomAlert("Please select a video");
             return ;
            }
-// 
+
            if(!title.trim()){
             showCustomAlert("Please enter a video title");
             return ;
            }
-// 
+
            setLoading(true)
            console.log("Channel data:", channelData);
            console.log("Channel ID:", channelData?._id);
@@ -50,7 +43,7 @@ function CreateVideos(){
            userFormData.append("description",description)
            userFormData.append("tags",JSON.stringify(tags.split(",").map(tag=>tag.trim())))
            userFormData.append("video",videoUrl)
-        //    userFormData.append("thumbnail",thumbnail)
+        
            userFormData.append("channelId",channelData?._id)
         try {
            const result=await axios.post(serverUrl +  "/api/content/Create-video",
@@ -104,7 +97,6 @@ function CreateVideos(){
                     <button className="w-full bg-orange-600 hover:bg-orange-700
                      py-3 rounded-lg font-medium disabled:bg-gray-600 flex 
                      items-center justify-center"
-                    // disabled={!title || !description || !tags || loading} onClick={handleUploadVideo}>{loading? <ClipLoader color="black" size={20}/>:"Upload Video"}</button>
                     disabled={!videoUrl || !title.trim() ||loading} onClick={
                         handleUploadVideo}>{loading? <ClipLoader color="black" 
                         size={20}/>:"Upload Video"}</button>

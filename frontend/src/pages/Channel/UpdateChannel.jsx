@@ -53,8 +53,6 @@ function UpdateChannel(){
         try {
             const result=await axios.post(serverUrl +
              "/api/user/UpdateChannel",userFormData,{withCredentials:true})
-            // const result=await axios.post(serverUrl + "/api/user/CreateChannel",userFormData,{withCredentials:true})
-        //    the above line give the error
             setLoading(false)
             console.log(result.data)
             dispatch(setChannelData(result.data))
@@ -63,7 +61,6 @@ function UpdateChannel(){
         } catch (error) {
             setLoading(false)
             console.log(error)
-            // the above line give the error
             showCustomAlert("Channel Update error")
            
         }

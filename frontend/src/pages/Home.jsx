@@ -30,15 +30,15 @@ function Home() {
     const location = useLocation()
     const { userData } = useSelector((state) => state.user)
     const [popUp, setPopUp] = useState(false)
-// 
+ 
     const [searchQuery,setSearchQuery]=useState("");
     const [isListening,setIsListening]=useState(false);
-// 
+
     const categories = ["Music", "Gaming", "Movies", "TV Shows", "News",
          "Trending", "Entertainment", "Education", "Science & Tech", "Travel",
           "Fashion", "Cooking", "Sports", "Pets", "Arts", "Comedy", "Vlogs"];
 
-    // 
+    
     const handleSearch = (e) => {
     e.preventDefault();
     // Search is performed by AllVideosPage using Redux data.

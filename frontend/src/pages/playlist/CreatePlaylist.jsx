@@ -8,7 +8,7 @@ function CreatePlaylist() {
   const [playlists, setPlaylists] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-//   const [channelId, setChannelId] = useState("");
+
   const [videoIds, setVideoIds] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
