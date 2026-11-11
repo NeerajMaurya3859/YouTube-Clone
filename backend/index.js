@@ -26,15 +26,16 @@ app.use((req, res, next) => {
 
 
 app.use(cors({
-    origin:"https://you-tube-clone-six-nu.vercel.app/",
+    origin:"https://you-tube-clone-six-nu.vercel.app",
     credentials:true
 }))
 app.use("/api/auth",authRouter)
 app.use("/api/user",userRouter)
 app.use("/api/content",contentRouter)
 app.use("/api/ai",aiRoute)
-app.listen(8000,()=>{
-    console.log("server started");
+const PORT = process.env.PORT || 8000;
+app.listen(PORT,"0.0.0.0",()=>{
+    console.log(`server started  on port ${PORT}`);
     connectDb()
 })
 
