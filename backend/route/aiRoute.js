@@ -3,7 +3,7 @@ import express from "express";
 const router = express.Router();
 
 const AI_SERVICE_URL =
-  process.env.AI_SERVICE_URL || "http://localhost:8001";
+  process.env.AI_SERVICE_URL || "https://youtube-clone-nhr4.onrender.com";
 
 router.post("/search", async (req, res) => {
   try {

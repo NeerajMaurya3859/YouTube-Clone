@@ -19,5 +19,5 @@ VECTOR_INDEX_NAME = os.getenv(
 
 BACKEND_API_URL = os.getenv(
     "BACKEND_API_URL",
-    "http://localhost:8000"
+    "https://youtube-clone-nhr4.onrender.com"
 )

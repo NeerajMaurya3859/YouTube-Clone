@@ -26,7 +26,7 @@ app.use((req, res, next) => {
 
 
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:"https://you-tube-clone-six-nu.vercel.app/",
     credentials:true
 }))
 app.use("/api/auth",authRouter)
