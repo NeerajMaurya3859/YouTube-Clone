@@ -74,8 +74,8 @@ function MobileProfile(){
          w-[100%]  flex flex-col pt-[100px] p-[10px]">
             {/* top profile section */}
             {userData?.photoUrl && <div className="p-4 flex items-center
-             gap-4 border-b border-gray-800"><img src="userData?.PhotoUrl"
-              alt="" className="w-16 h-16 rounded-full object-cover"/>
+             gap-4 border-b border-gray-800"><img src={userData?.PhotoUrl}
+              alt="Profile" className="w-16 h-16 rounded-full object-cover"/>
             <div className="flex flex-col">
                 <span className="font-semibold text-lg">{userData?.userName}</span>
                 <span className="text-gray-400 text-sm">{userData?.email}</span>
@@ -87,20 +87,20 @@ function MobileProfile(){
             </div>}
             {/* auth button */}
         <div className="flex gap-2 p-4 border-b border-gray-800 overflow-auto">
-            <button className="bg-gray-800 text-nowrap px-3
-             py-1 rounded-2xl text-sm flex items-center justify-center gap-2"
+            <button className="bg-gray-800 w-full px-4
+             py-3 rounded-full text-sm flex items-center justify-center gap-2"
              onClick={handleGoogleAuth}><FcGoogle className="text-xl"/>
              SignIn with Google Account</button>
-            <button className="bg-gray-800 text-nowrap px-3 py-1
-             rounded-2xl text-sm flex items-center justify-center gap-2"
+            <button className="bg-gray-800 w-full px-4 py-3
+             rounded-full text-sm flex items-center justify-center gap-2"
              onClick={()=>navigate("/signUp")}><TiUserAddOutline  
              className="text-xl"/>Create New Account</button>
-            <button className="bg-gray-800 text-nowrap px-3 py-1
-             rounded-2xl text-sm flex items-center justify-center gap-2"
+            <button className="bg-gray-800 w-full px-4 py-3
+             rounded-full text-sm flex items-center justify-center gap-2"
              onClick={()=>navigate("/signin")}><MdOutlineSwitchAccount 
              className="text-xl"/>SignIn with Your Account</button>
-            <button className="bg-gray-800 text-nowrap px-3 py-1 
-            rounded-2xl text-sm flex items-center justify-center gap-2"
+            <button className="bg-gray-800 w-full px-4 py-3 
+            rounded-full text-sm flex items-center justify-center gap-2"
             onClick={handleSignOut}><FiLogOut className="text-xl"/>
             SignOut </button>
         </div>
@@ -116,9 +116,9 @@ function MobileProfile(){
     )
 }
 
-function ProfileMenuItem ({icon,text,onclick}){
+function ProfileMenuItem ({icon,text,onClick}){
 return(
-    <button onClick={onclick} className="w-full rounded-full 
+    <button onClick={onClick} className="w-full rounded-full 
     flex items-center gap-3 p-4 active:bg-[#272727] text-left">
     <span className="text-lg">{icon}</span>
     <span className="text-sm">{text}</span>
