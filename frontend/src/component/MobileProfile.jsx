@@ -93,7 +93,7 @@ function MobileProfile(){
              SignIn with Google Account</button>
             <button className="bg-gray-800 w-full px-4 py-3
              rounded-full text-sm flex items-center justify-center gap-2"
-             onClick={()=>navigate("/signUp")}><TiUserAddOutline  
+             onClick={()=>navigate("/signup")}><TiUserAddOutline  
              className="text-xl"/>Create New Account</button>
             <button className="bg-gray-800 w-full px-4 py-3
              rounded-full text-sm flex items-center justify-center gap-2"

@@ -51,8 +51,6 @@ function App() {
                 <Route path='/' element={<Home />}>
                     <Route path='Shorts' element={<ProtectRoute userData={userData}><Shorts />
                     </ProtectRoute>} />
-                    <Route path='MobilePro' element={<ProtectRoute userData={userData}><MobileProfile />
-                    </ProtectRoute>} />
                     <Route path='viewchannel' element={<ProtectRoute userData={userData}><ViewChannel />
                     </ProtectRoute>} />
                     <Route path='UpdateChannel' element={<ProtectRoute userData={userData}><UpdateChannel />
@@ -72,6 +70,7 @@ function App() {
                     <Route path='CreatePost' element={<CreatePost />} />
                 </Route>
 
+                <Route path='MobilePro' element={<MobileProfile />}/>
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/signin' element={<SignIn />} />
                 <Route path='/ForgetPassword' element={<ForgetPassword />} />
