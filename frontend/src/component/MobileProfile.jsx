@@ -39,37 +39,37 @@ function MobileProfile(){
     }
 
 
-    // const handleGoogleAuth =async ()=>{
-    //     try {
-    //         const response=await signInWithPopup(auth,provider)
-    //         console.log(response)
-    //         let user = response.user
-    //         let userName = user.displayName
-    //         let email=user.email
-    //         let photoUrl=user.photoURL
+    const handleGoogleAuth =async ()=>{
+        try {
+            const response=await signInWithPopup(auth,provider)
+            console.log(response)
+            let user = response.user
+            let userName = user.displayName
+            let email=user.email
+            let photoUrl=user.photoURL
 
-    //         const formData=new FormData()
-    //         formData.append("userName",userName)
-    //         formData.append("email",email)
-    //         formData.append("photoUrl",photoUrl)
+            const formData=new FormData()
+            formData.append("userName",userName)
+            formData.append("email",email)
+            formData.append("photoUrl",photoUrl)
             
-    //         const result=await axios.post(serverUrl + "/api/auth/googleauth",
-    //             formData,{withCredentials:true})
-    //         console.log(result.data)
-    //          dispatch(setUserData(result.data))
-    //         console.log(result.data)
-    //         showCustomAlert("Google Authentication Successfully")
+            const result=await axios.post(serverUrl + "/api/auth/googleauth",
+                formData,{withCredentials:true})
+            console.log(result.data)
+             dispatch(setUserData(result.data))
+            console.log(result.data)
+            showCustomAlert("Google Authentication Successfully")
 
-    //     } catch (error) {
-    //         console.log("Firebase error code:",error.code);
-    //         console.log("Firebase error code:",error.message);
-    //         if(error.code==="auth/popup-closed-by-user"){
-    //             showCustomAlert("Google login popup was closed")
-    //             return ;
-    //         }
-    //         showCustomAlert("Google authentication failed");
-    //     }
-    // }
+        } catch (error) {
+            console.log("Firebase error code:",error.code);
+            console.log("Firebase error code:",error.message);
+            if(error.code==="auth/popup-closed-by-user"){
+                showCustomAlert("Google login popup was closed")
+                return ;
+            }
+            showCustomAlert("Google authentication failed");
+        }
+    }
 
     
 // const handleGoogleAuth = async () => {
@@ -117,52 +117,51 @@ function MobileProfile(){
 //     }
 // };
 
-const handleGoogleAuth = async () => {
-    try {
-        await signInWithRedirect(auth, provider);
-    } catch (error) {
-        console.log("Google Authentication Error:", error);
-        showCustomAlert("Google authentication failed");
-    }
-};
+// const handleGoogleAuth = async () => {
+//     try {
+//         await signInWithRedirect(auth, provider);
+//     } catch (error) {
+//         console.log("Google Authentication Error:", error);
+//         showCustomAlert("Google authentication failed");
+//     }
+// };
 
 
-useEffect(() => {
-    const checkGoogleAuth = async () => {
-        try {
-            const response = await getRedirectResult(auth);
+// useEffect(() => {
+//     const checkGoogleAuth = async () => {
+//         try {
+//             const response = await getRedirectResult(auth);
 
-            if (response) {
-                const user = response.user;
+//             if (response) {
+//                 const user = response.user;
 
-                const formData = new FormData();
+//                 const formData = new FormData();
 
-                formData.append("userName", user.displayName || "");
-                formData.append("email", user.email || "");
-                formData.append("photoUrl", user.photoURL || "");
+//                 formData.append("userName", user.displayName || "");
+//                 formData.append("email", user.email || "");
+//                 formData.append("photoUrl", user.photoURL || "");
 
-                const result = await axios.post(
-                    serverUrl + "/api/auth/googleauth",
-                    formData,
-                    { withCredentials: true }
-                );
+//                 const result = await axios.post(
+//                     serverUrl + "/api/auth/googleauth",
+//                     formData,
+//                     { withCredentials: true }
+//                 );
 
-                dispatch(setUserData(result.data));
+//                 dispatch(setUserData(result.data));
 
-                showCustomAlert("Google Authentication Successfully");
-            }
+//                 showCustomAlert("Google Authentication Successfully");
+//             }
 
-        } catch (error) {
-            console.log("Google Redirect Error:", error);
-            console.log("Error Code:", error.code);
+//         } catch (error) {
+//             console.log("Google Redirect Error:", error);
+//             console.log("Error Code:", error.code);
 
-            showCustomAlert("Google authentication failed");
-        }
-    };
+//             showCustomAlert("Google authentication failed");
+//         }
+//     };
 
-    checkGoogleAuth();
-}, [dispatch]);
-
+//     checkGoogleAuth();
+// }, [dispatch]);
 
 
 
