@@ -37,38 +37,85 @@ function MobileProfile(){
     }
 
 
-    const handleGoogleAuth =async ()=>{
-        try {
-            const response=await signInWithPopup(auth,provider)
-            console.log(response)
-            let user = response.user
-            let userName = user.displayName
-            let email=user.email
-            let photoUrl=user.photoURL
+    // const handleGoogleAuth =async ()=>{
+    //     try {
+    //         const response=await signInWithPopup(auth,provider)
+    //         console.log(response)
+    //         let user = response.user
+    //         let userName = user.displayName
+    //         let email=user.email
+    //         let photoUrl=user.photoURL
 
-            const formData=new FormData()
-            formData.append("userName",userName)
-            formData.append("email",email)
-            formData.append("photoUrl",photoUrl)
+    //         const formData=new FormData()
+    //         formData.append("userName",userName)
+    //         formData.append("email",email)
+    //         formData.append("photoUrl",photoUrl)
             
-            const result=await axios.post(serverUrl + "/api/auth/googleauth",
-                formData,{withCredentials:true})
-            console.log(result.data)
-             dispatch(setUserData(result.data))
-            console.log(result.data)
-            showCustomAlert("Google Authentication Successfully")
+    //         const result=await axios.post(serverUrl + "/api/auth/googleauth",
+    //             formData,{withCredentials:true})
+    //         console.log(result.data)
+    //          dispatch(setUserData(result.data))
+    //         console.log(result.data)
+    //         showCustomAlert("Google Authentication Successfully")
 
-        } catch (error) {
-            console.log("Firebase error code:",error.code);
-            console.log("Firebase error code:",error.message);
-            if(error.code==="auth/popup-closed-by-user"){
-                showCustomAlert("Google login popup was closed")
-                return ;
-            }
-            showCustomAlert("Google authentication failed");
+    //     } catch (error) {
+    //         console.log("Firebase error code:",error.code);
+    //         console.log("Firebase error code:",error.message);
+    //         if(error.code==="auth/popup-closed-by-user"){
+    //             showCustomAlert("Google login popup was closed")
+    //             return ;
+    //         }
+    //         showCustomAlert("Google authentication failed");
+    //     }
+    // }
+
+    
+const handleGoogleAuth = async () => {
+    try {
+        // Step 1: Firebase Google Authentication
+        const response = await signInWithPopup(auth, provider);
+
+        const user = response.user;
+
+        const userName = user.displayName;
+        const email = user.email;
+        const photoUrl = user.photoURL;
+
+        // Step 2: Prepare user data
+        const formData = new FormData();
+
+        formData.append("userName", userName || "");
+        formData.append("email", email || "");
+        formData.append("photoUrl", photoUrl || "");
+
+        // Step 3: Send data to backend
+        const result = await axios.post(
+            serverUrl + "/api/auth/googleauth",
+            formData,
+            { withCredentials: true }
+        );
+
+        // Step 4: Update Redux
+        dispatch(setUserData(result.data));
+
+        showCustomAlert("Google Authentication Successfully");
+
+    } catch (error) {
+        console.error("Google Authentication Error:", error);
+        console.error("Error Code:", error.code);
+        console.error("Error Message:", error.message);
+        console.error("Backend Error:", error.response?.data);
+
+        if (error.code === "auth/popup-closed-by-user") {
+            showCustomAlert("Google login popup was closed");
+            return;
         }
+
+        showCustomAlert("Google authentication failed");
     }
-   
+};
+
+
     return (
         <div className=" md:hidden  bg-[#0f0f0f] text-white h-[100%]
          w-[100%]  flex flex-col pt-[100px] p-[10px]">
