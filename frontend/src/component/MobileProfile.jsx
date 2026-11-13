@@ -17,9 +17,9 @@ import { setUserData } from "../redux/userSlice";
 import axios from "axios";
 import { serverUrl } from "../App";
 import { showCustomAlert } from "./CustomAlert";
-// import { signInWithPopup }. from "firebase/auth";
-import { signInWithRedirect, getRedirectResult } from "firebase/auth";
-import { useEffect } from "react";
+import { signInWithPopup } from "firebase/auth";
+// import { signInWithRedirect, getRedirectResult } from "firebase/auth";
+// import { useEffect } from "react";
 import { auth, provider } from "../../utils/Firebase";
 function MobileProfile(){
     const {userData}=useSelector(state=>state.user)
@@ -85,49 +85,39 @@ function MobileProfile(){
 
 const handleGoogleAuth = async () => {
     try {
-        await signInWithRedirect(auth, provider);
+        // Firebase Google Authentication
+        const response = await signInWithPopup(auth, provider);
+
+        const user = response.user;
+
+        // Prepare user details
+        const formData = new FormData();
+
+        formData.append("userName", user.displayName || "");
+        formData.append("email", user.email || "");
+        formData.append("photoUrl", user.photoURL || "");
+
+        // Send user details to backend
+        const result = await axios.post(
+            serverUrl + "/api/auth/googleauth",
+            formData,
+            { withCredentials: true }
+        );
+
+        // Update Redux store
+        dispatch(setUserData(result.data));
+
+        showCustomAlert("Google Authentication Successfully");
+
     } catch (error) {
-        console.log("Google Authentication Error:", error);
-        showCustomAlert("Google authentication failed");
+        console.error("Google Authentication Error:", error);
+        console.error("Error Code:", error.code);
+        console.error("Error Message:", error.message);
+        console.error("Backend Error:", error.response?.data);
+
+        showCustomAlert(error.message || "Google authentication failed");
     }
 };
-
-
-useEffect(() => {
-    const checkGoogleAuth = async () => {
-        try {
-            const response = await getRedirectResult(auth);
-
-            if (response) {
-                const user = response.user;
-
-                const formData = new FormData();
-
-                formData.append("userName", user.displayName || "");
-                formData.append("email", user.email || "");
-                formData.append("photoUrl", user.photoURL || "");
-
-                const result = await axios.post(
-                    serverUrl + "/api/auth/googleauth",
-                    formData,
-                    { withCredentials: true }
-                );
-
-                dispatch(setUserData(result.data));
-
-                showCustomAlert("Google Authentication Successfully");
-            }
-
-        } catch (error) {
-            console.log("Google Redirect Error:", error);
-            console.log("Error Code:", error.code);
-
-            showCustomAlert("Google authentication failed");
-        }
-    };
-
-    checkGoogleAuth();
-}, [dispatch]);
 
 
 
