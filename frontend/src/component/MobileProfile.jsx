@@ -38,51 +38,6 @@ function MobileProfile(){
         }
     }
     
-// const handleGoogleAuth = async () => {
-//     try {
-//         // Step 1: Firebase Google Authentication
-//         const response = await signInWithPopup(auth, provider);
-
-//         const user = response.user;
-
-//         const userName = user.displayName;
-//         const email = user.email;
-//         const photoUrl = user.photoURL;
-
-//         // Step 2: Prepare user data
-//         const formData = new FormData();
-
-//         formData.append("userName", userName || "");
-//         formData.append("email", email || "");
-//         formData.append("photoUrl", photoUrl || "");
-
-//         // Step 3: Send data to backend
-//         const result = await axios.post(
-//             serverUrl + "/api/auth/googleauth",
-//             formData,
-//             { withCredentials: true }
-//         );
-
-//         // Step 4: Update Redux
-//         dispatch(setUserData(result.data));
-
-//         showCustomAlert("Google Authentication Successfully");
-
-//     } catch (error) {
-//         console.error("Google Authentication Error:", error);
-//         console.error("Error Code:", error.code);
-//         console.error("Error Message:", error.message);
-//         console.error("Backend Error:", error.response?.data);
-
-//         if (error.code === "auth/popup-closed-by-user") {
-//             showCustomAlert("Google login popup was closed");
-//             return;
-//         }
-
-//         showCustomAlert("Google authentication failed");
-//     }
-// };
-
 const handleGoogleAuth = async () => {
     try {
         // Firebase Google Authentication
