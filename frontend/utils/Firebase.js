@@ -4,7 +4,7 @@ import {getAuth, GoogleAuthProvider} from "firebase/auth"
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
-  authDomain: "clonelogin-24913.firebaseapp.com",
+  authDomain: "you-tube-clone-six-nu.vercel.app",
   projectId: "clonelogin-24913",
   storageBucket: "clonelogin-24913.firebasestorage.app",
   messagingSenderId: "64209830741",
