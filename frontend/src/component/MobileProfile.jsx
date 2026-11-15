@@ -13,7 +13,7 @@ import{
 }from "react-icons/fa";
 import {GoVideo} from "react-icons/go";
 import { useNavigate } from "react-router-dom";
-import { setUserData } from "../redux/userSlice";
+import { setUserData,setChannelData } from "../redux/userSlice";
 import axios from "axios";
 import { serverUrl } from "../App";
 import { showCustomAlert } from "./CustomAlert";
@@ -61,6 +61,14 @@ const handleGoogleAuth = async () => {
 
         // Update Redux store
         dispatch(setUserData(result.data));
+        // Fetch channel after successful authentication
+        const channelResult = await axios.get(
+        serverUrl + "/api/user/getchannel",
+        { withCredentials: true }
+    );
+
+    dispatch(setChannelData(channelResult.data));
+
 
         showCustomAlert("Google Authentication Successfully");
 
