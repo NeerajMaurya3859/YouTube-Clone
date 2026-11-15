@@ -15,6 +15,10 @@ const GetCurrentUser = () => {
                 const result = await axios.get(`${serverUrl}/api/user/getuser`,
                      { withCredentials: true });
                      const user=result.data?.user ?? result.data ?? null;
+                    //  
+                    console.log("FULL USER DATA:", user);
+                    console.log("CHANNEL DATA:", user?.channel);
+                    // 
                 if (active){
                     dispatch(setUserData(user));
                     dispatch(setChannelData(user?.channel ?? null));
