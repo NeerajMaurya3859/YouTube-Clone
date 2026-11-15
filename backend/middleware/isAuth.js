@@ -3,7 +3,10 @@
 
  const isAuth=async(req,res,next)=>{
     try {
-        const {token}=req.cookies
+        // const {token}=req.cookies
+        const token = req.cookies?.token;
+        console.log("Received token:", token ? "YES" : "NO");
+        // 
         if(!token){
             return res.status(400).json({
                 message:"User does not have token"})
