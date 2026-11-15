@@ -5,7 +5,7 @@ import uploadOnCloudinary from "../config/cloudinary.js";
 import Video from "../model/videoModel.js";
 export const getCurrentUser=async(req,res)=>{
     try {
-        const user=await User.findById(req.userId).select("-password")
+        const user=await User.findById(req.userId).select("-password").populate("channel");
         if(!user){
             return res.status(404).json({message:"user is not found"})
         }
