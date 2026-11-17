@@ -5,7 +5,6 @@ import validator from "validator"
 import bcrypt from "bcryptjs"
 import genToken from "../config/token.js"
 import sendMail from "../config/sendMail.js"
-import admin from "../config/firebaseAdmin.js"
 export const SignUp=async(req,res)=>{
     try{
         const {userName,email,password,}=req.body
@@ -102,50 +101,25 @@ export const SignOut=async(req,res)=>{
 
 export const googleAuth = async (req, res) => {
     try {
-        const { idToken } = req.body;
+        const { userName, email, photoUrl } = req.body;
 
-        if (!idToken) {
-            return res.status(400).json({
-                message: "Firebase ID token is required"
-            });
-        }
-
-        // Verify Firebase ID token
-        const decodedToken = await admin.auth().verifyIdToken(idToken);
-
-        const { uid, email, name, picture, email_verified } = decodedToken;
-
-        if (!email || !email_verified) {
-            return res.status(401).json({
-                message: "Google email is not verified"
-            });
+        if (!email || !validator.isEmail(email)) {
+            return res.status(400).json({ message: "Invalid email" });
         }
 
         let user = await User.findOne({ email });
 
         if (!user) {
             user = await User.create({
-                userName: name || email.split("@")[0],
+                userName: userName || email.split("@")[0],
                 email,
-                photoUrl: picture || "",
-                firebaseUid: uid
+                photoUrl: photoUrl || ""
             });
         } else {
-            if (user.firebaseUid && user.firebaseUid !== uid) {
-                return res.status(403).json({
-                    message: "Firebase account mismatch"
-                });
+            if (!user.photoUrl && photoUrl) {
+                user.photoUrl = photoUrl;
+                await user.save();
             }
-
-            if (!user.firebaseUid) {
-                user.firebaseUid = uid;
-            }
-
-            if (!user.photoUrl && picture) {
-                user.photoUrl = picture;
-            }
-
-            await user.save();
         }
 
         const token = await genToken(user._id);
@@ -167,10 +141,9 @@ export const googleAuth = async (req, res) => {
         return res.status(200).json(safeUser);
 
     } catch (error) {
-        console.error("Google Auth Error:", error.message);
-
-        return res.status(401).json({
-            message: "Google authentication failed"
+        console.error("Google Auth Error:", error);
+        return res.status(500).json({
+            message: `Google auth error ${error}`
         });
     }
 };
