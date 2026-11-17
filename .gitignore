@@ -56,3 +56,4 @@ desktop.ini
 # Firebase credentials
 serviceAccountKey.json
 firebase-adminsdk-*.json
+firebase-service-account.json

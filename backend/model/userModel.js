@@ -26,6 +26,10 @@ const userSchema =new mongoose.Schema({
     type:mongoose.Schema.Types.ObjectId,
     ref:"Video"
   }],
+  firebaseUid:{
+  type:String,
+  default:null
+},
 resetOtp:{type:String,
   default:null,
 },
@@ -35,6 +39,7 @@ otpExpires:{type:Date,
 isOtpVerified:{type:Boolean,default:false},
 
 },{timestamps:true})
+
 
 
 

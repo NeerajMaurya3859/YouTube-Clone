@@ -5,7 +5,7 @@ import validator from "validator"
 import bcrypt from "bcryptjs"
 import genToken from "../config/token.js"
 import sendMail from "../config/sendMail.js"
-
+import admin from "../config/firebaseAdmin.js"
 export const SignUp=async(req,res)=>{
     try{
         const {userName,email,password,}=req.body
@@ -41,7 +41,12 @@ export const SignUp=async(req,res)=>{
             path:"/",
             maxAge:7*24*60*60*1000
         })
-        return res.status(201).json(user)
+        const safeUser = user.toObject();
+        delete safeUser.password;
+        delete safeUser.resetOtp;
+        delete safeUser.otpExpires;
+        delete safeUser.isOtpVerified;
+        return res.status(200).json(safeUser);
     }catch(error){
         return res.status(500).json({message:`signUp error ${error}`})
     }
@@ -68,7 +73,12 @@ export const SignIn=async(req,res)=>{
             path:"/",
             maxAge:7*24*60*60*1000
         })
-        return res.status(200).json(user)
+        const safeUser = user.toObject();
+        delete safeUser.password;
+        delete safeUser.resetOtp;
+        delete safeUser.otpExpires;
+        delete safeUser.isOtpVerified;
+        return res.status(200).json(safeUser);
 
     }catch(error){
         return res.status(500).json({message:`SignIn error ${error}`})
@@ -77,7 +87,12 @@ export const SignIn=async(req,res)=>{
 
 export const SignOut=async(req,res)=>{
     try{
-        await res.clearCookie("token")
+        await res.clearCookie("token",{
+            httpOnly:true,
+            secure:true,
+            sameSite:"none",
+            path:"/"
+        })
         return res.status(200).json({message:"SignOut Successfully"})
     }catch(error){
          return res.status(500).json({message:`SignOut error ${error}`})
@@ -85,54 +100,80 @@ export const SignOut=async(req,res)=>{
 
 }
 
-export const googleAuth =async (req,res)=>{
+export const googleAuth = async (req, res) => {
     try {
-        const {userName, email, photoUrl} = req.body
+        const { idToken } = req.body;
 
-        // Validate email
-        if(!email || !validator.isEmail(email)){
-            return res.status(400).json({message:"Invalid email"})
+        if (!idToken) {
+            return res.status(400).json({
+                message: "Firebase ID token is required"
+            });
         }
 
-        // Check if user exists
-        let user = await User.findOne({email})
+        // Verify Firebase ID token
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
 
-        if(!user){
-            // Create new user with Firebase photoUrl (don't upload to Cloudinary)
+        const { uid, email, name, picture, email_verified } = decodedToken;
+
+        if (!email || !email_verified) {
+            return res.status(401).json({
+                message: "Google email is not verified"
+            });
+        }
+
+        let user = await User.findOne({ email });
+
+        if (!user) {
             user = await User.create({
-                userName: userName || email.split('@')[0],
+                userName: name || email.split("@")[0],
                 email,
-                photoUrl: photoUrl || "" // Use Firebase URL directly
-            })
+                photoUrl: picture || "",
+                firebaseUid: uid
+            });
         } else {
-            // Update existing user if photoUrl is missing
-            if(!user.photoUrl && photoUrl){
-                user.photoUrl = photoUrl
-                await user.save()
+            if (user.firebaseUid && user.firebaseUid !== uid) {
+                return res.status(403).json({
+                    message: "Firebase account mismatch"
+                });
             }
+
+            if (!user.firebaseUid) {
+                user.firebaseUid = uid;
+            }
+
+            if (!user.photoUrl && picture) {
+                user.photoUrl = picture;
+            }
+
+            await user.save();
         }
 
-        // Generate token
-        let token = await genToken(user._id)
+        const token = await genToken(user._id);
 
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
             sameSite: "none",
             path: "/",
-            maxAge: 7*24*60*60*1000
-        })
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
 
-        // return res.status(200).json(user)
         const safeUser = user.toObject();
         delete safeUser.password;
+        delete safeUser.resetOtp;
+        delete safeUser.otpExpires;
+        delete safeUser.isOtpVerified;
+
         return res.status(200).json(safeUser);
-        
+
     } catch (error) {
-        console.error("Google Auth Error:", error)
-        return res.status(500).json({message:`Google auth error ${error}`})
+        console.error("Google Auth Error:", error.message);
+
+        return res.status(401).json({
+            message: "Google authentication failed"
+        });
     }
-}
+};
 
 export const sendOtp =async(req,res)=>{
     try {
@@ -141,7 +182,7 @@ export const sendOtp =async(req,res)=>{
         if(!user){
             return res.status(400).json({message:"user is not found."})
         }
-        const otp =await Math.floor(1000 + Math.random()*9000 ).toString()
+        const otp = Math.floor(1000 + Math.random()*9000 ).toString()
 
         user.resetOtp=otp,
         user.otpExpires=Date.now() + 5*60*1000,
@@ -185,8 +226,10 @@ export const resetPassword=async (req,res)=>{
             return res.status(400).json({message:"otp verification required"})
         }
         const hashPassword =await bcrypt.hash(password,10)
-        user.password=hashPassword,
-        user.isOtpVerified=false
+        user.password=hashPassword;
+        user.isOtpVerified=false;
+        user.resetOtp=undefined;
+        user.otpExpires=undefined;
         await user.save()
         return res.status(200).json({message:"Password reset successfully"})
     } catch (error) {
