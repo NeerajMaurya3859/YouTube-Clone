@@ -135,6 +135,8 @@ function ProfileMenuItem ({icon,text,onClick}){
 return(
     <button onClick={onClick} className="w-full rounded-full 
     flex items-center gap-3 p-4 active:bg-[#272727] text-left">
+    <span className="text-lg">{icon}</span>
+    <span className="text-sm">{text}</span>
     <div className="flex flex-col mt-[20px]">
     <ProfileMenuItem
         icon={<FaHistory />}
@@ -168,9 +170,6 @@ return(
         )}
     />
 </div>
-
-    <span className="text-lg">{icon}</span>
-    <span className="text-sm">{text}</span>
     </button>
 )
 }
