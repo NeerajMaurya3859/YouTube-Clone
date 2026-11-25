@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import VideoCard from "./VideoCard";
 
 // function AllVideosPage() {
-function AllVideosPage({serachQuery=""}){
+function AllVideosPage({searchQuery=""}){
     const { allVideosData = [] } = useSelector(state => state.content);
 // new lines 
 const filteredVideos=allVideosData.filter(video=>{
-    const query=serachQuery.trim().toLowerCase();
+    const query=searchQuery.trim().toLowerCase();
     if(!query){
         return true;
     }
@@ -23,7 +23,7 @@ const filteredVideos=allVideosData.filter(video=>{
 //
 if(!filteredVideos.length){
     return(<p className="text-gray-400 py-8">
-        No videos found for "{serachQuery}".
+        No videos found for "{searchQuery}".
     </p>)
 }
     return (

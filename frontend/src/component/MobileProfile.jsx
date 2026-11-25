@@ -89,7 +89,7 @@ const handleGoogleAuth = async () => {
          w-[100%]  flex flex-col pt-[100px] p-[10px]">
             {/* top profile section */}
             {userData?.photoUrl && <div className="p-4 flex items-center
-             gap-4 border-b border-gray-800"><img src={userData?.PhotoUrl}
+             gap-4 border-b border-gray-800"><img src={userData?.photoUrl}
               alt="Profile" className="w-16 h-16 rounded-full object-cover"/>
             <div className="flex flex-col">
                 <span className="font-semibold text-lg">{userData?.userName}</span>
@@ -135,6 +135,40 @@ function ProfileMenuItem ({icon,text,onClick}){
 return(
     <button onClick={onClick} className="w-full rounded-full 
     flex items-center gap-3 p-4 active:bg-[#272727] text-left">
+    <div className="flex flex-col mt-[20px]">
+    <ProfileMenuItem
+        icon={<FaHistory />}
+        text="History"
+        onClick={() => navigate("/History")}
+    />
+
+    <ProfileMenuItem
+        icon={<FaList />}
+        text="Playlists"
+        onClick={() => navigate("/CreatePlaylist")}
+    />
+
+    <ProfileMenuItem
+        icon={<GoVideo />}
+        text="Save Videos"
+        onClick={() => navigate("/SavedVideos")}
+    />
+
+    <ProfileMenuItem
+        icon={<FaThumbsUp />}
+        text="Liked Videos"
+        onClick={() => navigate("/LikedVideos")}
+    />
+
+    <ProfileMenuItem
+        icon={<SiYoutubestudio />}
+        text="PT Studio"
+        onClick={() => navigate(
+            userData?.channel ? "/viewchannel" : "/CreateChannel"
+        )}
+    />
+</div>
+
     <span className="text-lg">{icon}</span>
     <span className="text-sm">{text}</span>
     </button>
