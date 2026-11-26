@@ -116,15 +116,16 @@ function Shorts() {
     };
 
     return (
-        <div className="bg-[#0f0f0f] min-h-screen w-full flex items-center
-         justify-center overflow-hidden mt-16 mb-20">
-            <div className="relative w-full max-w-md aspect-[9/16] bg-black 
-            rounded-lg overflow-hidden shadow-2xl">
+        <div className="bg-[#0f0f0f] w-full min-h-[calc(100dvh-60px)] flex items-center
+         justify-center overflow-hidden px-2 py-3 md:px-4">
+            <div className="relative bg-black overflow-hidden shadow-2xl rounded-xl
+            w-full max-w-[min(420px,calc((100dvh-100px)*9/16))] h-[calc(100dvh-100px)]
+            max-h-[850px] aspect-[9/16]">
                 {/* Video */}
                 <video
                     ref={videoRef}
                     src={currentShort?.shortUrl}
-                    className="w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-contain"
                     autoPlay
                     onClick={togglePlay}
                     onEnded={handleNext}
@@ -150,7 +151,7 @@ function Shorts() {
                 )}
 
                 {/* Channel Info - Top Left */}
-                <div className="absolute top-4 left-4 flex items-center gap-2 z-20">
+                <div className="absolute top-4 left-3 sm:left-4 flex items-center gap-2 z-20 max-w-[75%]">
                     <img
                         src={currentShort?.channel?.avatar}
                         alt=""
@@ -172,7 +173,7 @@ function Shorts() {
                 </div>
 
                 {/* Right Side Actions */}
-                <div className="absolute right-4 bottom-20 flex flex-col gap-6 z-20">
+                <div className="absolute right-2 sm:right-3 bottom-24 flex flex-col gap-3 sm:gap-5 z-20">
                     {/* Like */}
                     <button
                         onClick={handleLike}
