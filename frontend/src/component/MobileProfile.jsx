@@ -122,15 +122,19 @@ const handleGoogleAuth = async () => {
         <div className="flex flex-col mt-[20px]">
             <ProfileMenuItem icon={< FaHistory/>} text={"History"}
             onClick={()=>navigate("/History")}/>
-            <ProfileMenuItem icon={< FaList/>} text={"Playlists"}
-            onClick={()=>navigate("/playlists")}/>
+            {/* <ProfileMenuItem icon={< FaList/>} text={"Playlists"} */}
+            {/* // onClick={()=>navigate("/playlists")}/> */}
             <ProfileMenuItem icon={< GoVideo/>} text={"Save Videos"}
-            onClick={()=>navigate("/save Videos")}/>
+            onClick={()=>navigate("/SavedVideos")}/>
             <ProfileMenuItem icon={<FaThumbsUp />} text={"Liked Videos"}
-            onClick={()=>navigate("/liked videos")}/>
+            onClick={()=>navigate("/LikedVideos")}/>
             <ProfileMenuItem icon={<FaList/>} text={"playlists"}
             onClick={()=>navigate("/CreatePlaylist")}/>
-            <ProfileMenuItem icon={< SiYoutubestudio/>} text={"PT Studio"}/>
+            <ProfileMenuItem icon={< SiYoutubestudio/>} text={"PT Studio"}
+            onClick={()=>{
+                userData?.channel
+                ? navigate("/ViewChannel"):navigate("/CreateChannel");
+            }}/>
         </div>
         </div>
 
