@@ -59,7 +59,7 @@ function VideoCard({
                 <img
                     src={thumbnail}
                     alt={title}
-                    className="rounded-xl w-full h-[200px] border
+                    className="rounded-xl w-full aspect-video border
                      border-gray-800 object-cover"
                 />
                 <span className="absolute bottom-2 right-2 bg-black

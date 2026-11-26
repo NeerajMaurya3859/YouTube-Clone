@@ -16,7 +16,7 @@ function AllVideosPage({ searchQuery = "" }) {
     });
 
     if (!allVideosData.length) {
-        return <p className="text-gray-400 py-8">No videos available.</p>;
+        return <p className="text-gray-400 py-8"></p>;
     }
 
     if (!filteredVideos.length) {
@@ -31,9 +31,8 @@ function AllVideosPage({ searchQuery = "" }) {
         <div
             className="w-full min-w-0 grid gap-x-6 gap-y-8 mb-12"
             style={{
-                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))"
-            }}
-        >
+                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 360px), 360px))"
+            }}>
             {filteredVideos.map(video => (
                 <div key={video._id} className="w-full min-w-0">
                     <VideoCard

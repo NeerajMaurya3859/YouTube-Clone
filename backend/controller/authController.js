@@ -3,8 +3,11 @@ import uploadOnCloudinary from "../config/cloudinary.js"
 import User from "../model/userModel.js"
 import validator from "validator"
 import bcrypt from "bcryptjs"
+import crypto from "crypto";
 import genToken from "../config/token.js"
 import sendMail from "../config/sendMail.js"
+import PendingSignup from "../model/pendingSignupModel.js"
+import {verifyFirebaseToken} from ""
 export const SignUp=async(req,res)=>{
     try{
         const {userName,email,password,}=req.body
