@@ -18,7 +18,7 @@ const filteredVideos=allVideosData.filter(video=>{
 })
 //
     if (!allVideosData.length) {
-        return <p className="text-gray-400 py-8">No videos available yet.</p>;
+        return <p className="text-gray-400 py-8"></p>;
     }
 //
 if(!filteredVideos.length){

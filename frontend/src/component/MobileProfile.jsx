@@ -120,10 +120,16 @@ const handleGoogleAuth = async () => {
             SignOut </button>
         </div>
         <div className="flex flex-col mt-[20px]">
-            <ProfileMenuItem icon={< FaHistory/>} text={"History"}/>
-            <ProfileMenuItem icon={< FaList/>} text={"Playlists"}/>
-            <ProfileMenuItem icon={< GoVideo/>} text={"Save Videos"}/>
-            <ProfileMenuItem icon={<FaThumbsUp />} text={"Liked Videos"}/>
+            <ProfileMenuItem icon={< FaHistory/>} text={"History"}
+            onClick={()=>navigate("/History")}/>
+            <ProfileMenuItem icon={< FaList/>} text={"Playlists"}
+            onClick={()=>navigate("/playlists")}/>
+            <ProfileMenuItem icon={< GoVideo/>} text={"Save Videos"}
+            onClick={()=>navigate("/save Videos")}/>
+            <ProfileMenuItem icon={<FaThumbsUp />} text={"Liked Videos"}
+            onClick={()=>navigate("/liked videos")}/>
+            <ProfileMenuItem icon={<FaList/>} text={"playlists"}
+            onClick={()=>navigate("/CreatePlaylist")}/>
             <ProfileMenuItem icon={< SiYoutubestudio/>} text={"PT Studio"}/>
         </div>
         </div>
@@ -135,41 +141,9 @@ function ProfileMenuItem ({icon,text,onClick}){
 return(
     <button onClick={onClick} className="w-full rounded-full 
     flex items-center gap-3 p-4 active:bg-[#272727] text-left">
+
     <span className="text-lg">{icon}</span>
     <span className="text-sm">{text}</span>
-    <div className="flex flex-col mt-[20px]">
-    <ProfileMenuItem
-        icon={<FaHistory />}
-        text="History"
-        onClick={() => navigate("/History")}
-    />
-
-    <ProfileMenuItem
-        icon={<FaList />}
-        text="Playlists"
-        onClick={() => navigate("/CreatePlaylist")}
-    />
-
-    <ProfileMenuItem
-        icon={<GoVideo />}
-        text="Save Videos"
-        onClick={() => navigate("/SavedVideos")}
-    />
-
-    <ProfileMenuItem
-        icon={<FaThumbsUp />}
-        text="Liked Videos"
-        onClick={() => navigate("/LikedVideos")}
-    />
-
-    <ProfileMenuItem
-        icon={<SiYoutubestudio />}
-        text="PT Studio"
-        onClick={() => navigate(
-            userData?.channel ? "/viewchannel" : "/CreateChannel"
-        )}
-    />
-</div>
     </button>
 )
 }
