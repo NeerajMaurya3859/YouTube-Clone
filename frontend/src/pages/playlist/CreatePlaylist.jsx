@@ -15,23 +15,14 @@ function CreatePlaylist() {
   const [creating, setCreating] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-
-  // Read authentication token.
-  // const getHeaders = () => {
-    // const token = localStorage.getItem("token");
-
-    // return token
-      // ? { Authorization: `Bearer ${token}` }
-      // : {};
-  // };
-
+ const [availableVideos,setAvailableVideos]=useState([]);
+ const [searchVideo,setSearchVideo]=useState("");
   // Fetch the logged-in user's playlists.
   const fetchPlaylists = async () => {
     try {
       setError("");
 
       const response = await axios.get(`${API_URL}/playlists`, {
-        // headers: getHeaders(),
         withCredentials: true,
       });
 
@@ -51,9 +42,36 @@ function CreatePlaylist() {
     }
   };
 
+
+const fetchAvailableVideos = async () => {
+    try {
+        const response = await axios.get(
+            `${API_URL}/getAllVideos`,
+            {
+                withCredentials: true
+            }
+        );
+
+        setAvailableVideos(
+          Array.isArray(response.data)? response.data :[]);
+
+    } catch (error) {
+        console.error(
+            "Error fetching available videos:",
+            error.response?.data || error.message
+        );
+    }
+};
+
   useEffect(() => {
     fetchPlaylists();
+    fetchAvailableVideos();
   }, []);
+
+
+const filteredVideos=availableVideos.filter(video=>
+  video.title?.toLowerCase().includes(searchVideo.toLowerCase())
+)
 
   // Create a new playlist.
 
@@ -77,7 +95,6 @@ const handleCreatePlaylist = async (e) => {
                 description: description.trim()
             },
             {
-                // headers: getHeaders(),
                 withCredentials: true
             }
         );
@@ -120,7 +137,6 @@ const handleCreatePlaylist = async (e) => {
         `${API_URL}/playlists/${playlistId}/videos`,
         { videoId },
         {
-          // headers: getHeaders(),
           withCredentials: true,
         }
       );
@@ -145,7 +161,6 @@ const handleCreatePlaylist = async (e) => {
       await axios.delete(
         `${API_URL}/playlists/${playlistId}/videos/${videoId}`,
         {
-          // headers: getHeaders(),
           withCredentials: true,
         }
       );
@@ -171,7 +186,6 @@ const handleCreatePlaylist = async (e) => {
       setMessage("");
 
       await axios.delete(`${API_URL}/playlists/${playlistId}`, {
-        // headers: getHeaders(),
         withCredentials: true,
       });
 
@@ -184,6 +198,7 @@ const handleCreatePlaylist = async (e) => {
       );
     }
   };
+
 
   return (
     <main style={styles.container}>
@@ -245,9 +260,29 @@ const handleCreatePlaylist = async (e) => {
         </form>
       )}
 
+
+      <section style={styles.searchSection}>
+                <h2 style={styles.sectionHeading}>
+                    Find Videos
+                </h2>
+
+                <input
+                    type="text"
+                    style={styles.input}
+                    placeholder="Search videos by title..."
+                    value={searchVideo}
+                    onChange={(e) => setSearchVideo(e.target.value)}
+                />
+
+                <p style={styles.muted}>
+                    {filteredVideos.length} videos available
+                </p>
+            </section>
+
       {loading ? (
         <p>Loading playlists...</p>
       ) : playlists.length === 0 ? (
+
         <p style={styles.empty}>No playlists found. Create your first playlist!</p>
       ) : (
         <section style={styles.grid}>
@@ -264,7 +299,12 @@ const handleCreatePlaylist = async (e) => {
               {playlist.videos?.length > 0 ? (
                 playlist.videos.map((video) => (
                   <div key={video._id} style={styles.videoRow}>
+                    <div style={styles.videoInfo}>
+                    <img src={video.thumbnail} alt={video.title}
+                       style={styles.thumbnail}/>
+
                     <span>{video.title || "Untitled video"}</span>
+                    </div>
                     <button
                       type="button"
                       style={styles.removeButton}
@@ -281,28 +321,34 @@ const handleCreatePlaylist = async (e) => {
               )}
 
               <div style={styles.addVideo}>
-                <input
+                <select
                   style={styles.input}
-                  type="text"
-                  placeholder="Enter video ID"
                   value={videoIds[playlist._id] || ""}
                   onChange={(e) =>
                     setVideoIds((prev) => ({
                       ...prev,
                       [playlist._id]: e.target.value,
                     }))
-                  }
-                />
-
+                  }>
+                    <option value="">
+                     Select a video</option>
+                    {filteredVideos.map((video) => {
+                    const alreadyAdded =
+                     playlist.videos?.some(
+                      (item) =>item._id === video._id);
+                    return(
+                            <option key={video._id} value={video._id}
+                            disabled={alreadyAdded}>
+                            {video.title} {alreadyAdded ? " (Already added)": ""}
+                            </option>);
+                          })}</select>
                 <button
                   type="button"
                   style={styles.secondaryButton}
-                  onClick={() => handleAddVideo(playlist._id)}
-                >
+                  onClick={() => handleAddVideo(playlist._id)}>
                   Add Video
                 </button>
               </div>
-
               <button
                 type="button"
                 style={styles.deleteButton}
