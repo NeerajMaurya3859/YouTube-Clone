@@ -6,8 +6,8 @@ import VideoCard from "./VideoCard";
 function AllVideosPage({searchQuery=""}){
     const { allVideosData = [] } = useSelector(state => state.content);
 // new lines 
+const query=searchQuery.trim().toLowerCase();
 const filteredVideos=allVideosData.filter(video=>{
-    const query=searchQuery.trim().toLowerCase();
     if(!query){
         return true;
     }
@@ -27,20 +27,24 @@ if(!filteredVideos.length){
     </p>)
 }
     return (
-        <div className="flex flex-wrap gap-6 mb-12 
-    md:justify-start sm:items-center sm:justify-center">
+        <div className="w-full min-w-0 grid gap-x-6 gap-y-8 mb-12"
+        style={{gridTemplateColumns:"repeat(auto-fit,minmax(min(100%,32px),1fr))"
+        }}>
             {/* {allVideosData.map(video => ( */}
           {filteredVideos.map(video=>(
+            <div key={video._id} className="w-full min-w-0">
                 <VideoCard
-                    key={video._id}
-                    duration="0:00"
+                    // key={video._id}
+                    // duration="0:00"
                     thumbnail={video.thumbnail}
+                    videoUrl={video.videoUrl}
                     title={video.title}
                     channelLogo={video.channel?.avatar}
                     channelName={video.channel?.name}
                     id={video._id}
                     views={video.views}
                 />
+                </div>
             ))}
         </div>
     );
