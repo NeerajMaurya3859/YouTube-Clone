@@ -31,10 +31,11 @@ function AllVideosPage({ searchQuery = "" }) {
         <div
             className="w-full min-w-0 grid gap-x-6 gap-y-8 mb-12"
             style={{
-                gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 360px), 360px))"
+                gridTemplateColumns: "repeat(auto-fill, minmax(280px,1fr))"
             }}>
             {filteredVideos.map(video => (
-                <div key={video._id} className="w-full min-w-0">
+                <div key={video._id} className="w-full min-w-0"
+                style={{maxWidth:"360px"}}>
                     <VideoCard
                         thumbnail={video.thumbnail}
                         videoUrl={video.videoUrl}
