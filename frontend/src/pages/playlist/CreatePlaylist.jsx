@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const API_URL = "https://youtube-clone-nhr4.onrender.com/api/content/playlists";
+const API_URL = "https://youtube-clone-nhr4.onrender.com/api/content";
 
 function CreatePlaylist() {
   const [playlists, setPlaylists] = useState([]);
@@ -17,13 +17,13 @@ function CreatePlaylist() {
   const [error, setError] = useState("");
 
   // Read authentication token.
-  const getHeaders = () => {
-    const token = localStorage.getItem("token");
+  // const getHeaders = () => {
+    // const token = localStorage.getItem("token");
 
-    return token
-      ? { Authorization: `Bearer ${token}` }
-      : {};
-  };
+    // return token
+      // ? { Authorization: `Bearer ${token}` }
+      // : {};
+  // };
 
   // Fetch the logged-in user's playlists.
   const fetchPlaylists = async () => {
@@ -31,7 +31,7 @@ function CreatePlaylist() {
       setError("");
 
       const response = await axios.get(`${API_URL}/playlists`, {
-        headers: getHeaders(),
+        // headers: getHeaders(),
         withCredentials: true,
       });
 
@@ -77,7 +77,7 @@ const handleCreatePlaylist = async (e) => {
                 description: description.trim()
             },
             {
-                headers: getHeaders(),
+                // headers: getHeaders(),
                 withCredentials: true
             }
         );
@@ -120,7 +120,7 @@ const handleCreatePlaylist = async (e) => {
         `${API_URL}/playlists/${playlistId}/videos`,
         { videoId },
         {
-          headers: getHeaders(),
+          // headers: getHeaders(),
           withCredentials: true,
         }
       );
@@ -145,7 +145,7 @@ const handleCreatePlaylist = async (e) => {
       await axios.delete(
         `${API_URL}/playlists/${playlistId}/videos/${videoId}`,
         {
-          headers: getHeaders(),
+          // headers: getHeaders(),
           withCredentials: true,
         }
       );
@@ -171,7 +171,7 @@ const handleCreatePlaylist = async (e) => {
       setMessage("");
 
       await axios.delete(`${API_URL}/playlists/${playlistId}`, {
-        headers: getHeaders(),
+        // headers: getHeaders(),
         withCredentials: true,
       });
 
