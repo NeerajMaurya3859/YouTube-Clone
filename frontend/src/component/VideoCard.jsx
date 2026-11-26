@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 function VideoCard({
     thumbnail,
-    duration,
     channelLogo,
     title,
     channelName,
