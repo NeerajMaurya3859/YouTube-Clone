@@ -52,7 +52,7 @@ function SignIn(){
             }
         }
         return(
-        <div className="flex items=center justify-center min-h-screen  
+        <div className="flex items-center justify-center min-h-screen  
         bg-[#181818]">
         <div className="bg-[#202124] rounded-2xl p-10 w-full max-w-md shadow-lg">
           <div className="flex items-center mb-6">
@@ -116,13 +116,13 @@ function SignIn(){
                         ()=>setShowPassword(!showPassword)}/>
                     <label className="text-gray-300 cursor-pointer" htmlFor="showpass">
                         show password</label>
-                </div>
+                </div>  
                 <div className="flex justify-between items-center  mt-10">
                     <button className="text-orange-400 text-sm hover:underline" 
                     onClick={()=>navigate("/ForgetPassword")}>Forget Password</button>
                     <button className="bg-orange-500 hover:bg-orange-600 text-white 
                     px-6 py-2 rounded-full" onClick={handleSignIn} disabled={loading}>{
-                        loading?<ClipLoader color="black" size={20}/>:SignIn}Next</button>
+                        loading?<ClipLoader color="black" size={20}/>:"SignIn"}Next</button>
                 
                 </div>
                 </>

@@ -1,4 +1,4 @@
-import React,{use,useState} from "react"
+import React,{useState} from "react"
 import { FaArrowLeft } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
 import logo from "../assets/playtube.png";
@@ -34,7 +34,7 @@ function SignUp(){
               return  
             }
             if(password !== confirmPassword){
-                showCustomAlert("password is match");
+                showCustomAlert("password do not match");
                 return
             }
         }
@@ -48,7 +48,8 @@ function SignUp(){
     } 
     const handleSignUp=async()=>{
         if(!backendImage){
-            alert("please choose profile image")
+            showCustomAlert("please choose profile image")
+            return;
         }
         setLoading(true)
         const userFormData=new FormData()
@@ -60,7 +61,7 @@ function SignUp(){
             const result=await axios.post(serverUrl + "/api/auth/signup",
                 userFormData,{withCredentials:true})
             console.log(result.data)
-            dispatch(setUserName(result.data))
+            dispatch(setUserData(result.data))
             navigate("/")
             setLoading(false)
             showCustomAlert("Account Created")
